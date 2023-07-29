@@ -1,7 +1,8 @@
+import os
 from datetime import datetime
 from enum import Enum
 from dotenv import load_dotenv
-import os
+from app.type.types import BlockchainEnum
 
 from sqlalchemy import Boolean, BigInteger,Column, DateTime, ForeignKey, String, create_engine
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
@@ -32,17 +33,6 @@ def _reset_inc():
     global _inc
     _inc = 1
 
-class BlockchainEnum(Enum):
-    BSC = "bsc"
-    ETHEREUM = "Ethereum"
-    LITECOIN = "Litecoin"
-    POLYGON  = "Polygon"
-    MUMBAI   = "Mumbai"
-
-class UserTypeEnum(Enum):
-    USER = "user"
-    ADMIN = "ADMIN"
-    GOD = "GOD"
 
 
 class Endpoint(Base):
