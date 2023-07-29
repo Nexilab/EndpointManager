@@ -54,5 +54,6 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
     updated_at = Column(DateTime)
 
-Base.metadata.create_all(engine)
+def create_db_and_tables():
+    Base.metadata.create_all(engine)
 
