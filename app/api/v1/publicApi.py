@@ -11,6 +11,7 @@ router = APIRouter()
 @router.post("/publicApi/{blockchain}")
 def sendReq(blockchain: str, payload: dict = Body(...)):
     rpcUrl = getRandomRpcUrl(blockchain)
+    print(f"Selected rpcurl is : {rpcUrl}")
     headers = {'Content-Type': 'application/json'}
 
     try:
