@@ -15,6 +15,7 @@ app = FastAPI()
 app.include_router(v1_router, prefix="/v1")
 
 def main():
+    print("۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱۱")
     create_db_and_tables()
     print("oooooooooooooooookkkkkkkkkkkkkkkkkkkkkkkkkkk")
     fill_all_endpoints()
