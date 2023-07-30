@@ -3,7 +3,7 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI, Query
 from app.api.v1.v1_router import v1_router
-from app.models.models import engine,create_db_and_tables,fill_all_endpoints
+from app.models.models import engine,create_db_and_tables,fill_all_endpoints,get_session,close_database_connection
 
 from typing import Annotated
 
@@ -22,6 +22,14 @@ def startup_event():
 @app.on_event("startup")
 async def startup_event_handler():
     startup_event()
+
+@app.on_event("shutdown")
+async def shutdown_event_handler():
+    print("Server is shutting down...")
+
+def shutdown_event():
+    get_session().close()
+    close_database_connection()
 
 
 def main():

@@ -86,4 +86,9 @@ def fill_all_endpoints():
         addNewRpcUrl(endpoint.blockchain, endpoint.rpcUrl)
         idx = idx + 1
     print(f"{idx} rpc url has been added.")
+
+
+
+    def close_database_connection():
+        engine.dispose()
     
