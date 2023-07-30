@@ -1,11 +1,12 @@
 import os
 from datetime import datetime
-from enum import Enum
+from contextlib import contextmanager
+from enum import StrEnum
 from dotenv import load_dotenv
+from sqlalchemy.orm import declarative_base, relationship, sessionmaker
+from sqlalchemy import Boolean, BigInteger,Integer,Column, DateTime, ForeignKey, String, create_engine, Enum
 from app.type.types import BlockchainEnum
 
-from sqlalchemy import Boolean, BigInteger,Column, DateTime, ForeignKey, String, create_engine
-from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy.pool import StaticPool
 
 load_dotenv()
@@ -18,6 +19,9 @@ engine = create_engine(
     connect_args={"check_same_thread": False},
     poolclass=StaticPool,  # Use a static pool to persist state with an in memory instance of sqlite
 )
+
+Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 _inc = 1
 
@@ -37,7 +41,7 @@ def _reset_inc():
 
 class Endpoint(Base):
     __tablename__ = "tblEndpoint"
-    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    id = Column(BigInteger().with_variant(Integer, "sqlite"), primary_key=True, autoincrement=True)
     company = Column(String(255), nullable=False)
     blockchain = Column(Enum(BlockchainEnum), nullable=False)
     rpcUrl= Column(String(255), unique=True, nullable=False)
@@ -57,3 +61,16 @@ class User(Base):
 def create_db_and_tables():
     Base.metadata.create_all(engine)
 
+
+@contextmanager
+def get_session():
+    session = Session(bind=engine)
+    try:
+        yield session
+        session.commit()
+    except:
+        session.rollback()
+        raise
+    finally:
+        session.close()
+    

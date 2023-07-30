@@ -1,13 +1,22 @@
-from enum import Enum
+from enum import StrEnum, verify, UNIQUE, auto
 
-class BlockchainEnum(str, Enum):
-    BSC = "bsc"
-    ETHEREUM = "Ethereum"
-    LITECOIN = "Litecoin"
-    POLYGON  = "Polygon"
-    MUMBAI   = "Mumbai"
+class BlockchainEnum(StrEnum):
+    BSC = "BSC"
+    ETHEREUM  = "ETHEREUM"
+    LITECOIN  = "LITECOIN"
+    POLYGON   = "POLYGON"
+    MUMBAI    = "MUMBAI"
 
-class UserTypeEnum(Enum):
-    USER = "user"
-    ADMIN = "ADMIN"
-    GOD = "GOD"
+class UserTypeEnum(StrEnum):
+    USER = auto()
+    ADMIN = auto()
+    GOD = auto()
+
+
+def getBlockchainEnum(blockchain: str) -> BlockchainEnum:
+    blockchain = blockchain.upper()
+
+    if blockchain in [item.value for item in BlockchainEnum]:
+        return BlockchainEnum(blockchain)
+
+    return None

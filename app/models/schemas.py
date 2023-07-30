@@ -10,3 +10,16 @@ class EndpointSchema(BaseModel):
     apikey: str
     created_at: DateTime
     updated_at: DateTime
+    class Config:
+        arbitrary_types_allowed = True
+        orm_mode = True
+    
+    
+class EndpointReq(BaseModel):
+    company: str
+    blockchain: str
+    rpcUrl: str
+    apikey: str
+    class Config:
+        orm_mode = True
+    
