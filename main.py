@@ -17,7 +17,7 @@ app.include_router(v1_router, prefix="/v1")
 def main():
     create_db_and_tables()
     fill_all_endpoints()
-    uvicorn.run("main:app", host="0.0.0.0", port=webappPort)
+    #uvicorn.run("main:app", host="0.0.0.0", port=webappPort)
 
 
 if __name__ == "__main__":
