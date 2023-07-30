@@ -3,6 +3,7 @@ from sqlalchemy import exists
 from app.models.schemas import EndpointReq
 from app.models.models import Endpoint,get_session
 from app.type.types import getBlockchainEnum
+from app.models.global_vars import addNewRpcUrl
 
 router = APIRouter()
 
@@ -24,23 +25,23 @@ def add_new_rpc_url(data: EndpointReq):
         blockchain_enum = getBlockchainEnum(data.blockchain)
         if blockchain_enum is None:
             raise HTTPException(status_code=400, detail="Invalid blockchain!")
-
+        rpcUrl = data.rpcUrl.strip()
         # Create a new Endpoint object
         endpoint = Endpoint(
-            company=data.company,
+            company=data.company.strip(),
             blockchain=blockchain_enum,
-            rpcUrl=data.rpcUrl,
-            apikey=data.apikey,
+            rpcUrl=rpcUrl,
+            apikey=data.apikey.strip(),
         )
 
         # Add the new Endpoint to the database using a session context manager
         with get_session() as session:
-            exists_query = session.query(exists().where(Endpoint.rpcUrl == data.rpcUrl)).scalar()
+            exists_query = session.query(exists().where(Endpoint.rpcUrl == rpcUrl)).scalar()
             if exists_query:
                 raise HTTPException(status_code=400, detail="rpcUrl already exists!")
             session.add(endpoint)
             session.commit()
-
+        addNewRpcUrl(blockchain_enum,rpcUrl)
         return {"message": "New RPC URL added successfully!"}
 
     except HTTPException as ex:
