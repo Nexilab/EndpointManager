@@ -3,7 +3,7 @@ import uvicorn
 from dotenv import load_dotenv
 from fastapi import FastAPI, Query
 from app.api.v1.v1_router import v1_router
-from app.models.models import engine,create_db_and_tables
+from app.models.models import engine,create_db_and_tables,fill_all_endpoints
 
 from typing import Annotated
 
@@ -16,6 +16,7 @@ app.include_router(v1_router, prefix="/v1")
 
 def main():
     create_db_and_tables()
+    fill_all_endpoints()
     uvicorn.run("main:app", host="0.0.0.0", port=webappPort)
 
 

@@ -11,6 +11,7 @@ def addNewRpcUrl(blockchain: str, rpcUrl: str):
         endpointUrl[blockchain] = [rpcUrl]
 
 def getRandomRpcUrl(blockchain: str):
+    blockchain = blockchain.upper()
     if blockchain in endpointUrl and len(endpointUrl[blockchain]) > 0:
         return random.choice(endpointUrl[blockchain])
     else:

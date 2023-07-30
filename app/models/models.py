@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy import Boolean, BigInteger,Integer,Column, DateTime, ForeignKey, String, create_engine, Enum
 from app.type.types import BlockchainEnum
+from app.models.global_vars import addNewRpcUrl
 
 from sqlalchemy.pool import StaticPool
 
@@ -73,4 +74,13 @@ def get_session():
         raise
     finally:
         session.close()
+
+def fill_all_endpoints():
+    # Get all existing endpoints from the database
+    session = Session(bind=engine)
+    endpoints = session.query(Endpoint).all()
+
+    # Call addNewRpcUrl for each endpoint to add them to the global map
+    for endpoint in endpoints:
+        addNewRpcUrl(endpoint.blockchain, endpoint.rpcUrl)
     
