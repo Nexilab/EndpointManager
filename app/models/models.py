@@ -89,6 +89,6 @@ def fill_all_endpoints():
 
 
 
-    def close_database_connection():
-        engine.dispose()
+def close_database_connection():
+    engine.dispose()
     
