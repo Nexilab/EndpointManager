@@ -77,10 +77,13 @@ def get_session():
 
 def fill_all_endpoints():
     # Get all existing endpoints from the database
+    idx = 0
     session = Session(bind=engine)
     endpoints = session.query(Endpoint).all()
 
     # Call addNewRpcUrl for each endpoint to add them to the global map
     for endpoint in endpoints:
         addNewRpcUrl(endpoint.blockchain, endpoint.rpcUrl)
+        idx = idx + 1
+    print(f"{idx} rpc url has been added.")
     
